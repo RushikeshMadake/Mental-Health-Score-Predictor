@@ -362,18 +362,18 @@ input:invalid:not(:placeholder-shown):not(:focus) {
 .gauge { width: 100%; max-width: 260px; overflow: visible; margin-bottom: 8px; }
 .gauge-track {
   fill: none;
-  stroke: rgba(255,255,255,0.14);
-  stroke-width: 14;
+  stroke: #d9d9d9;
+  stroke-width: 12;
   stroke-linecap: round;
 }
 .gauge-fill {
   fill: none;
   stroke: url(#gaugeGradient);
-  stroke-width: 14;
+  stroke-width: 12;
   stroke-linecap: round;
   stroke-dasharray: 314;
   stroke-dashoffset: 314;
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: stroke-dashoffset 1.5s ease-in-out;
 }
 .gauge-needle-hub { fill: #fff; opacity: 0.9; }
 .gauge-ticks line { stroke: rgba(255,255,255,0.3); stroke-width: 1.5; }

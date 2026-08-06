@@ -20,7 +20,7 @@
   const errorLabelEl = document.getElementById("error-label");
   const errorCopyEl = document.getElementById("error-copy");
 
-  const GAUGE_ARC_LENGTH = 314; // approx pi * r(100)
+  const GAUGE_ARC_LENGTH = 314.16; // approx pi * r(100)
 
   // ---------------------------------------------------------
   // Draw tick marks on both gauges (0..10, every 2 units)
@@ -183,25 +183,45 @@
     };
   }
 
+  function normalizeScoreToTen(score) {
+    const numericScore = Number(score);
+    if (!Number.isFinite(numericScore)) return 0;
+
+    if (numericScore > 10) {
+      return Math.max(0, Math.min(10, numericScore / 10));
+    }
+
+    return Math.max(0, Math.min(10, numericScore));
+  }
+
   function renderResult(score) {
-    const clamped = Math.max(0, Math.min(10, score));
+
+    const clamped = Math.max(0, Math.min(10, Number(score)));
+
+    scoreNumberEl.textContent = clamped.toFixed(1);
+
     const { label, context } = bandFor(clamped);
 
-    scoreNumberEl.textContent = score.toFixed(2);
     scoreBandEl.textContent = label;
     scoreContextEl.textContent = context;
 
-    // reset then animate the arc fill on next frame
-    gaugeFill.style.transition = "none";
-    gaugeFill.style.strokeDashoffset = String(GAUGE_ARC_LENGTH);
-    requestAnimationFrame(() => {
-      gaugeFill.style.transition = "";
-      const offset = GAUGE_ARC_LENGTH * (1 - clamped / 10);
-      gaugeFill.style.strokeDashoffset = String(offset);
-    });
+    // Gauge animation
+    const length = gaugeFill.getTotalLength();
+
+    gaugeFill.style.strokeDasharray = length;
+    gaugeFill.style.strokeDashoffset = length;
+
+    // Force browser repaint
+    gaugeFill.getBoundingClientRect();
+
+    const progress = clamped / 10;
+
+    gaugeFill.style.transition = "stroke-dashoffset 1.5s ease-in-out";
+
+    gaugeFill.style.strokeDashoffset = length * (1 - progress);
 
     showState("result");
-  }
+}
 
   function renderError(label, copy) {
     if (errorLabelEl) errorLabelEl.textContent = label;
