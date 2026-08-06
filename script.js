@@ -152,8 +152,11 @@
   // UI state switching
   // ---------------------------------------------------------
   function showState(name) {
-    [stateIdle, stateLoading, stateResult, stateError].forEach((el) => (el.hidden = true));
-    ({ idle: stateIdle, loading: stateLoading, result: stateResult, error: stateError }[name]).hidden = false;
+    const targetState = { idle: stateIdle, loading: stateLoading, result: stateResult, error: stateError }[name];
+    [stateIdle, stateLoading, stateResult, stateError].forEach((el) => {
+      if (el) el.hidden = true;
+    });
+    if (targetState) targetState.hidden = false;
   }
 
   function setSubmitting(isSubmitting) {
@@ -201,8 +204,8 @@
   }
 
   function renderError(label, copy) {
-    errorLabelEl.textContent = label;
-    errorCopyEl.textContent = copy;
+    if (errorLabelEl) errorLabelEl.textContent = label;
+    if (errorCopyEl) errorCopyEl.textContent = copy;
     showState("error");
   }
 
@@ -293,6 +296,8 @@
     el.addEventListener("input", () => clearFieldError(el));
     el.addEventListener("change", () => clearFieldError(el));
   });
+
+  showState("idle");
 
   resetBtn.addEventListener("click", () => {
     showState("idle");

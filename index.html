@@ -178,6 +178,11 @@
   <aside class="panel result-panel" aria-live="polite">
     <div class="result-inner" id="result-inner">
 
+      <div class="state state-idle" id="state-idle">
+        <p class="loading-label">Ready when you are</p>
+        <p class="loading-copy">Fill out the form to read your mental health signal.</p>
+      </div>
+
       <div class="state state-loading" id="state-loading" hidden>
         <div class="pulse-ring"></div>
         <p class="loading-label">Reading the signal…</p>
@@ -208,7 +213,7 @@
       </div>
 
       <div class="state state-error" id="state-error" hidden>
-        
+        <p class="error-label" id="error-label"></p>
         <p class="error-copy" id="error-copy"></p>
         <button type="button" class="reset-btn" id="error-retry-btn">Try again</button>
       </div>
